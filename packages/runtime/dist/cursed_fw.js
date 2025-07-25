@@ -1,0 +1,1 @@
+console.log('This soon will be a cursed framework');

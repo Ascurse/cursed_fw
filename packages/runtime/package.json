@@ -1,0 +1,28 @@
+{
+  "name": "cursed_fw",
+  "version": "1.0.0",
+  "main": "dist/cursed_fw.js",
+  "files": [
+    "dist/cursed_fw.js"
+  ],
+  "scripts": {
+    "prepack": "npm run build",
+    "build": "rollup -c",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "eslint": "^9.31.0",
+    "jsdom": "^26.1.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-filesize": "^10.0.0",
+    "vitest": "^3.2.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

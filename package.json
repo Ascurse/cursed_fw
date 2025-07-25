@@ -1,0 +1,16 @@
+{
+  "name": "cursed_fw-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "serve:examples": "npx http-server . -o ./examples/"
+  },
+  "keywords": [],
+  "author": "Maximilian Shupyro <suomi7862535@gmail.com>",
+  "license": "ISC",
+  "description": "A project to learn how frontend frameworks work",
+  "private": true,
+  "workspaces": [
+    "packages/runtime"
+  ]
+}
