@@ -1,6 +1,6 @@
 {
   "name": "cursed_fw",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "dist/cursed_fw.js",
   "files": [
     "dist/cursed_fw.js"
