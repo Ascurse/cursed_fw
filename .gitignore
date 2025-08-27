@@ -4,6 +4,7 @@
 
 # Build artifacts
 /dist
+/packages/runtime/dist
 /build
 /out
 /public # if it contains generated files

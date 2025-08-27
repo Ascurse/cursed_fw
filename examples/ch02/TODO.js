@@ -1,100 +1,159 @@
-const TODO = ["Walk the dog", "Buy groceries", "Finish the project"];
+import {
+  createApp,
+  h,
+  hFragment,
+} from "https://unpkg.com/cursed_fw/dist/cursed_fw.js";
 
-const addTodoInput = document.getElementById("todo-input");
-const addTodoBtn = document.getElementById("add-todo-btn");
-const TODOList = document.getElementById("TODO-list");
+const state = {
+  currentTodo: "",
+  edit: {
+    idx: null,
+    original: "",
+    edited: null,
+  },
+  TODO: ["Walk the dog", "Water the plants"],
+};
 
-for (const todo of TODO) {
-    TODOList.append(renderTodoInReadMode(todo));
+const reducers = {
+  "update-current-todo": (state, currentTodo) => ({
+    ...state,
+    currentTodo,
+  }),
+  "add-todo": (state) => ({
+    ...state,
+    currentTodo: "",
+    TODO: [...state.TODO, state.currentTodo],
+  }),
+  "start-editing-todo": (state, idx) => ({
+    ...state,
+    edit: {
+      idx,
+      original: state.TODO[idx],
+      edited: state.TODO[idx],
+    },
+  }),
+  "edit-todo": (state, edited) => ({
+    ...state,
+    edit: {
+      ...state.edit,
+      edited,
+    },
+  }),
+  "save-edited-todo": (state) => {
+    const TODO = [...state.TODO];
+    TODO[state.edit.idx] = state.edit.edited;
+
+    return {
+      ...state,
+      edit: { idx: null, original: null, edited: null },
+      TODO,
+    };
+  },
+  "cancel-editing-todo": (state) => ({
+    ...state,
+    edit: { idx: null, original: null, edited: null },
+  }),
+  "remove-todo": (state, idx) => ({
+    ...state,
+    TODO: state.TODO.filter((_, i) => i !== idx),
+  }),
+};
+
+function App(state, emit) {
+  return hFragment([
+    h("h1", {}, ["My TODO"]),
+    CreateTodo(state, emit),
+    TodoList(state, emit),
+  ]);
 }
 
-addTodoInput.addEventListener("input", () => {
-    addTodoBtn.disabled = addTodoInput.value.length < 3;
-});
-
-addTodoInput.addEventListener('keydown', ({ key }) => {
-    if (key === 'Enter' && addTodoInput.value.length > 3) {
-        addTodo();
-    }
-})
-
-addTodoBtn.addEventListener('click', () => {
-    addTodo();
-})
-
-
-function renderTodoInReadMode(todo) {
-    const li = document.createElement("li");
-    const span = document.createElement("span");
-    span.textContent = todo;
-    span.addEventListener('dblclick', () => {
-        const idx = TODO.indexOf(todo);
-
-        TODOList.replaceChild(
-            renderTodoInEditMode(todo),
-            TODOList.childNodes[idx]
-        )
-    })
-    li.append(span);
-
-    const button = document.createElement("button");
-    button.textContent = 'Done'
-    button.addEventListener('click', () => {
-        const idx = TODO.indexOf(todo);
-        removeTodo(idx);
-    })
-    li.append(button);
-    return li;
+function CreateTodo({ currentTodo }, emit) {
+  return h("div", {}, [
+    h("label", { for: "todo-input" }, ["New TODO"]),
+    h("input", {
+      type: "text",
+      id: "todo-input",
+      value: currentTodo,
+      on: {
+        input: ({ target }) => emit("update-current-todo", target.value),
+        keydown: ({ key }) => {
+          if (key === "Enter" && currentTodo.length >= 3) {
+            emit("add-todo");
+          }
+        },
+      },
+    }),
+    h(
+      "button",
+      {
+        disabled: currentTodo.length < 3,
+        on: {
+          click: () => emit("add-todo"),
+        },
+      },
+      ["Add"]
+    ),
+  ]);
 }
 
-function renderTodoInEditMode(todo) {
-    const li = document.createElement("li");
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = todo;
-    li.append(input);
-
-    const saveBtn = document.createElement("button");
-    saveBtn.textContent = "Save";
-    saveBtn.addEventListener("click", () => {
-        const idx = TODO.indexOf(todo);
-        updateTodo(idx, input.value);
-    })
-    li.append(saveBtn);
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.textContent = "Cancel";
-    cancelBtn.addEventListener("click", () => {
-        const idx = TODO.indexOf(todo);
-        TODOList.replaceChild(
-            renderTodoInReadMode(todo),
-            TODOList.childNodes[idx]
-        )
-    })
-    li.append(cancelBtn);
-
-    return li;
+function TodoList({ TODO, edit }, emit) {
+  return h(
+    "ul",
+    {},
+    TODO.map((todo, i) => TodoItem({ todo, i, edit }, emit))
+  );
 }
 
-function addTodo() {
-    const newTodo = addTodoInput.value;
-    TODO.push(newTodo);
-    TODOList.append(renderTodoInReadMode(newTodo));
-    addTodoInput.value = "";
-    addTodoBtn.disabled = true;
+function TodoItem({ todo, i, edit }, emit) {
+  const isEditing = edit.idx === i;
+
+  return isEditing
+    ? h("li", {}, [
+        h("input", {
+          value: edit.edited,
+          on: {
+            input: ({ target }) => emit("edit-todo", target.value),
+          },
+        }),
+        h(
+          "button",
+          {
+            on: {
+              click: () => emit("save-edited-todo"),
+            },
+          },
+          ["Save"]
+        ),
+        h(
+          "button",
+          {
+            on: {
+              click: () => emit("cancel-editing-todo"),
+            },
+          },
+          ["Cancel"]
+        ),
+      ])
+    : h("li", {}, [
+        h(
+          "span",
+          {
+            on: {
+              dbclick: () => emit("start-editing-todo", i),
+            },
+          },
+          [todo]
+        ),
+        h(
+          "button",
+          {
+            on: {
+              click: () => emit("remove-todo", i),
+            },
+          },
+          ["Done"]
+        ),
+      ]);
 }
 
-function removeTodo(index) {
-    TODO.splice(index, 1);
-    TODOList.childNodes[index].remove();
-}
-
-function updateTodo(index, newTodo) {
-    TODO[index] = newTodo;
-    const todo = renderTodoInReadMode(newTodo);
-    TODOList.replaceChild(
-        todo,
-        TODOList.childNodes[index]
-    )
-}
+createApp({state, reducers, view: App}).mount(document.body);
