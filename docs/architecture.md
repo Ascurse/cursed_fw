@@ -21,6 +21,22 @@ packages/runtime/src/index.js
 
 The public ESM boundary exports `createApp`, `h`, `hFragment`, and `hString`. A view receives `(state, emit)` and returns a VNode tree. A command dispatch runs a matching reducer, then the current implementation destroys and mounts the entire tree.
 
+## Runtime, tooling, and distribution
+
+These are separate compatibility surfaces:
+
+| Surface | Canonical choice | Constraint |
+| --- | --- | --- |
+| Shipped UI runtime | Browser standards and ESM | No Node, Bun, or Deno APIs in runtime code |
+| Development and CI | Active Node LTS | Pin the exact supported version in executable config |
+| Install and publish | npm and the npm registry | Keep a conventional package contract and lockfile |
+| Compatibility lanes | pnpm, Bun, and Deno | Test consumption without runtime-specific exports or forks |
+| Optional secondary registry | JSR after stable types | Must not replace or diverge from the canonical package API |
+
+Node does not execute the client UI in production. It runs development tools and may later host separately designed SSR tooling; SSR is outside the current core. Consumers must be able to import the built package through a bundler, and the core should retain a direct browser ESM path.
+
+An optional compiler may later optimize syntax or static work, but it must preserve the documented runtime semantics and remain unnecessary for understanding the core execution model.
+
 ## Intended internal boundaries
 
 The target is still one package. These are module boundaries, not a request to create packages immediately.
@@ -65,6 +81,8 @@ The final step is currently implemented as full teardown plus mount. Incremental
 The npm package has already published the four-function API. Preserve names and observable semantics while internals change. A breaking change requires a decision entry, migration notes, consumer fixtures, and an explicit major-version plan.
 
 Known defects and accidental implementation details are not compatibility promises. Contracts identify which behaviors are intentional.
+
+Performance and portability changes follow [the measurement contract](performance.md). Benchmark-only branches, hidden public hooks, and results without a correctness oracle are outside the architecture.
 
 ## Architecture change protocol
 

@@ -6,6 +6,8 @@
 
 AI-native does not mean AI-generated or prompt-heavy. It means that the repository exposes intent through narrow modules, explicit types and data flow, executable contracts, deterministic tooling, and concise documentation.
 
+The competitive position is deliberately narrow: a browser-first runtime with predictable DOM behavior, small delivery cost, and measurably low change cost. The project does not need to beat every framework in every workload to succeed.
+
 ## Product principles
 
 1. **Explicit over magical.** Plain VNodes, functions, parameters, and return values are preferred over reflection, decorators, implicit globals, and compiler-only semantics.
@@ -14,6 +16,8 @@ AI-native does not mean AI-generated or prompt-heavy. It means that the reposito
 4. **Stable surfaces, replaceable internals.** Public APIs change deliberately. Internal algorithms may evolve behind behavioral contracts.
 5. **Readable performance.** Optimize measured renderer paths without obscuring the algorithm. A small amount of duplication is preferable to a premature abstraction.
 6. **Documentation with lifetimes.** Current truth, durable rationale, gotchas, and task state live in different systems so that none of them becomes a stale dump.
+7. **Correctness before benchmark rank.** A result is invalid when it changes DOM semantics, identity, focus, events, or cleanup to become faster.
+8. **Portable browser core.** Runtime code is standards-based ESM without Node- or tool-specific APIs; development tooling remains replaceable.
 
 ## Near-term goals
 
@@ -23,6 +27,7 @@ AI-native does not mean AI-generated or prompt-heavy. It means that the reposito
 - Replace full-tree destroy/remount with an incremental DOM patcher that preserves node identity and focus.
 - Introduce TypeScript only after behavioral tests protect the current runtime.
 - Evaluate agent usability with repeatable tasks and a concrete rubric.
+- Establish the comparative measurement contract in [performance.md](performance.md), then publish reproducible CPU, startup, memory, correctness, and changeability baselines.
 
 ## Non-goals until the core is stable
 
@@ -31,6 +36,7 @@ AI-native does not mean AI-generated or prompt-heavy. It means that the reposito
 - Signals, computed values, or scheduling APIs without an ADR and a measured need.
 - Multiple packages before a second renderer or independently consumable boundary exists.
 - Maximizing benchmark scores at the cost of clarity.
+- Making Bun, Deno, a compiler, or any package manager part of browser runtime semantics.
 
 ## Success measures
 
@@ -39,3 +45,5 @@ AI-native does not mean AI-generated or prompt-heavy. It means that the reposito
 - Rendering changes include real browser evidence when DOM identity, events, attributes, or focus can change.
 - A fresh agent can complete the benchmark tasks in [agent-evals.md](agent-evals.md) without hidden context, broad unrelated edits, or invariant violations.
 - Architecture documents stay short because source layout and types carry most of the explanation.
+- Competitive claims are scoped to pinned scenarios and publish raw evidence; correctness failures receive no performance score.
+- The browser runtime stays importable as standard ESM with zero production dependencies unless a measured decision changes that constraint.

@@ -14,6 +14,21 @@ They are not the product backlog. Each evaluation runs in a disposable branch or
 4. Stop when the task is complete or the agent declares a concrete blocker.
 5. Review the result against the rubric below; discard the probe branch afterward.
 
+Comparative runs pin the repository commit, framework version, model and tool versions, permission set, task prompt, timeout, and starting context. Run each scenario at least five times per framework/model pair; report individual outcomes, median, p95 where meaningful, and failure causes rather than only the best run.
+
+## Quantitative metrics
+
+- first-pass acceptance and final acceptance rate;
+- elapsed time and time to the first valid failing proof;
+- input/output tokens or the nearest available context-cost measure;
+- tool calls, files read, and production modules changed;
+- framework APIs invented or used incorrectly;
+- boundary violations, unrelated edits, and public-contract regressions;
+- review corrections and explicit human interventions;
+- verification surfaces completed with successful exit evidence.
+
+Lower time, context, or diff size never compensates for failed acceptance. Prompts describe observable outcomes and constraints, not file paths or framework-specific solutions. Equivalent React, Vue, Svelte, and `cursed_fw` tasks must have the same behavioral oracle even when idiomatic implementations differ.
+
 ## Initial scenarios
 
 ### E1 — Locate and explain the application lifecycle
@@ -60,6 +75,8 @@ Score each dimension from 0 to 2:
 | Human readability | Clever or under-explained implementation | Understandable with effort | Intentional names, explicit flow, minimal necessary rationale |
 
 A run passes with at least 10/12 and no zero in contract safety, test quality, or verification. Record qualitative failure causes; do not optimize only for the numeric score.
+
+The first comparative baseline evaluates candidate goals from [performance.md](performance.md). A claimed advantage requires repeated accepted runs and published metadata; a single successful agent or one model is exploratory evidence only.
 
 ## Feedback loop
 

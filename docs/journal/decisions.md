@@ -2,6 +2,20 @@
 
 Durable architectural rationale that cannot be reconstructed cheaply from the current code. Newest entries go first; each field stays within one to four sentences.
 
+## 2026-08-05 — Browser ESM is the runtime contract; Node and npm are tooling defaults
+
+**Context:** A frontend runtime, its development host, package manager, and registry are different portability surfaces; binding them together would shrink compatibility without improving browser behavior.
+**Decision:** Ship standards-based ESM without Node-specific APIs. Use Active Node LTS and npm as the canonical development, CI, and publishing path; treat pnpm, Bun, Deno, and later JSR as compatibility or distribution lanes.
+**Why:** Browser independence preserves the widest consumer surface, while the established Node/npm path minimizes ecosystem and agent ambiguity. Alternatives may still prove operational advantages without becoming framework semantics.
+**Consequences:** Runtime imports of host-specific APIs are architecture violations. Replacing the canonical toolchain requires repository-specific compatibility and performance evidence plus a new decision.
+
+## 2026-08-05 — Competitive claims require correctness-first reproducible evidence
+
+**Context:** Microbenchmarks can reward invalid DOM behavior, incompatible modes, or cherry-picked operations, while the project also wants to measure AI and human changeability.
+**Decision:** Use `docs/performance.md` as the measurement contract: correctness gates timing, standard and product workloads stay separate, raw samples and environment metadata accompany summaries, and changeability is evaluated independently.
+**Why:** Scoped reproducible evidence can guide architecture; an absolute “faster than” claim cannot.
+**Consequences:** Benchmark-only runtime APIs and unpublished exclusions are rejected. Candidate budgets become gates only after a recorded baseline ratifies them.
+
 ## 2026-08-05 — Public API changes require explicit compatibility decisions
 
 **Context:** The package has published `createApp`, `h`, `hFragment`, and `hString`, even though the project is still experimental.

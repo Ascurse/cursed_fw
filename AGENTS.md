@@ -8,9 +8,10 @@ Before a non-trivial task:
 
 1. Read [docs/README.md](docs/README.md) for the documentation map.
 2. Read [docs/vision.md](docs/vision.md) and the relevant section of [docs/architecture.md](docs/architecture.md).
-3. Read only the contract files related to the surface you will change.
-4. Read the active entries in `docs/journal/decisions.md` and `docs/journal/gotchas.md`. Use `docs/journal/glossary.md` for unfamiliar project terms.
-5. Open the active Beads issue with `bd show <id>` and treat its scope and acceptance criteria as the task contract.
+3. Read [docs/performance.md](docs/performance.md) for performance, benchmark, package-tooling, or comparative work.
+4. Read only the contract files related to the surface you will change.
+5. Read the active entries in `docs/journal/decisions.md` and `docs/journal/gotchas.md`. Use `docs/journal/glossary.md` for unfamiliar project terms.
+6. Open the active Beads issue with `bd show <id>` and treat its scope and acceptance criteria as the task contract.
 
 Do not read archive files from `docs/journal/` during normal task work. They exist only for human historical audits.
 
@@ -21,6 +22,7 @@ Do not read archive files from `docs/journal/` during normal task work. They exi
 - `examples/` contains real browser consumers. Examples are executable acceptance surfaces, not disposable demos.
 - `docs/contracts/` describes behavior consumers may rely on.
 - `docs/journal/` records only decisions and gotchas that cannot be reconstructed cheaply from the current code.
+- `benchmarks/` contains reproducible fixtures, runners, and raw evidence; it must not contain benchmark-only runtime APIs.
 
 Keep one runtime package until a second renderer or another independently consumable product creates a real package boundary.
 
@@ -61,6 +63,7 @@ Tests alone do not prove browser behavior. Changes to rendering, events, attribu
 ## Documentation lifecycle
 
 - Living truth: `docs/vision.md`, `docs/architecture.md`, `docs/development.md`, and `docs/contracts/`.
+- Measurement truth: `docs/performance.md` defines the protocol; versioned benchmark artifacts hold results.
 - Durable rationale: `docs/journal/decisions.md`.
 - Non-obvious traps: `docs/journal/gotchas.md`.
 - Current work and dependencies: Beads only.

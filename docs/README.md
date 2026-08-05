@@ -6,6 +6,7 @@ This directory separates current system truth from historical rationale and acti
 | --- | --- | --- | --- |
 | [vision.md](vision.md) | Product direction, goals, non-goals, success measures | Choosing scope or evaluating a new feature | The framework's purpose or product constraints change |
 | [architecture.md](architecture.md) | Current system, intended boundaries, dependency rules | Changing modules or data flow | A boundary, dependency, or public surface changes |
+| [performance.md](performance.md) | Competitive evidence, benchmark protocol, budgets, and portability | Evaluating performance, tooling, or comparative claims | A metric, workload, budget, or runtime support policy changes |
 | [development.md](development.md) | Task workflow, TDD, verification, release discipline | Starting or finishing implementation | Commands or Definition of Done change |
 | [contracts/](contracts/README.md) | Observable behavior and compatibility commitments | Changing runtime behavior | Consumer-visible behavior changes |
 | [agent-evals.md](agent-evals.md) | Repeatable evaluation of AI-agent usability | Measuring or improving agent ergonomics | Evaluation scenarios or rubric change |
@@ -18,6 +19,7 @@ Active tasks, dependencies, priorities, and progress live in Beads. They are int
 ## Documentation rules
 
 - Contracts describe observable behavior, not implementation hopes.
+- Performance claims require the correctness and reproducibility protocol in `performance.md`.
 - Architecture distinguishes the current implementation from intended boundaries.
 - Journal entries explain reasons or traps, not source code and not task history.
 - A behavior change updates its test and contract in the same diff.
