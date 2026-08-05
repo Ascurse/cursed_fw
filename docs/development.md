@@ -23,13 +23,31 @@ Run workspace scripts from the repository root:
 
 ```bash
 npm ci
-npm run lint --workspace cursed_fw
-npm run test:run --workspace cursed_fw
-npm run build --workspace cursed_fw
-npm pack --workspace cursed_fw --dry-run
+npm run check
 ```
 
-The foundation backlog tracks restoration of these commands and creation of a single aggregate `npm run check`. Until that task is complete, an individual green command must not be reported as a green project baseline.
+`npm run check` is the single aggregate gate and the project baseline. It runs, in order:
+
+```bash
+npm run doctor
+npm run check:metadata
+npm run lint
+npm run test:run
+npm run check:package
+```
+
+Each of these also runs standalone for a focused loop, plus `npm run build`:
+
+```bash
+npm run doctor         # environment sanity checks
+npm run check:metadata # fails if packages/runtime/dist is tracked by git
+npm run lint
+npm run test:run
+npm run build
+npm run check:package  # packs the workspace and verifies the installed consumer
+```
+
+A single focused green command is not a green project baseline — only `npm run check` is.
 
 ## Test layers
 

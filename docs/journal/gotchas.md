@@ -6,8 +6,8 @@ Non-obvious traps that have already cost investigation time. Newest entries go f
 
 **Symptom:** Rollup can produce a valid bundle while the tracked `dist` remains stale or `npm pack --dry-run` fails during prepack.
 **Cause:** Build, repository artifact state, lifecycle scripts, and packed consumer resolution are separate surfaces.
-**Workaround:** Verify build, package dry-run, tarball contents, and an installed consumer fixture independently; require a clean-tree check after generation.
-**Where in code:** [packages/runtime/package.json](../../packages/runtime/package.json), [packages/runtime/rollup.config.mjs](../../packages/runtime/rollup.config.mjs), [packages/runtime/dist/cursed_fw.js](../../packages/runtime/dist/cursed_fw.js).
+**Workaround:** Run `npm run check:package`, which packs the workspace, installs the tarball into a temporary consumer, and verifies both tarball contents and installed exports.
+**Where in code:** [packages/runtime/package.json](../../packages/runtime/package.json), [packages/runtime/rollup.config.mjs](../../packages/runtime/rollup.config.mjs), [scripts/check-package.mjs](../../scripts/check-package.mjs).
 
 ## 2026-08-05 — Full rerender loses browser DOM identity
 
@@ -15,10 +15,3 @@ Non-obvious traps that have already cost investigation time. Newest entries go f
 **Cause:** Every command destroys the previous VNode DOM and mounts a new tree, replacing the focused element.
 **Workaround:** Preserve this failure in a browser acceptance test, then replace teardown/remount with incremental patching that reuses compatible nodes.
 **Where in code:** [packages/runtime/src/app.js](../../packages/runtime/src/app.js), [packages/runtime/src/destroy-dom.js](../../packages/runtime/src/destroy-dom.js), [packages/runtime/src/mount-dom.js](../../packages/runtime/src/mount-dom.js), [examples/ch02/TODO.js](../../examples/ch02/TODO.js).
-
-## 2026-08-05 — ESLint 9 ignores the legacy configuration by default
-
-**Symptom:** `npm run lint --workspace cursed_fw` exits before checking source and reports that no `eslint.config.*` exists.
-**Cause:** The package uses ESLint 9 with a legacy `.eslintrc.js` configuration.
-**Workaround:** Migrate intentionally to flat config and verify the actual source; do not report lint coverage from dependency installation or editor diagnostics.
-**Where in code:** [packages/runtime/package.json](../../packages/runtime/package.json), [packages/runtime/.eslintrc.js](../../packages/runtime/.eslintrc.js).
