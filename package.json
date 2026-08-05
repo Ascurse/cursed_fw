@@ -7,7 +7,7 @@
   },
   "keywords": [],
   "author": "Maximilian Shupyro <suomi7862535@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "description": "A project to learn how frontend frameworks work",
   "private": true,
   "workspaces": [

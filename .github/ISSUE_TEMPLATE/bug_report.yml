@@ -1,0 +1,57 @@
+name: Bug report
+description: Report behavior that contradicts a documented contract or a reasonable expectation.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing, check [docs/contracts/](../../docs/contracts/README.md) — the behavior you
+        expected may be intentionally unspecified rather than broken.
+
+  - type: textarea
+    id: expected-vs-actual
+    attributes:
+      label: Expected vs actual
+      description: State the observable behavior you expected and what happened instead.
+      placeholder: |
+        Expected: patching a keyed list preserves the DOM node of an unmoved item.
+        Actual: the node is recreated and input focus is lost.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: >
+        The smallest code that shows the problem — ideally a snippet using only public exports from
+        `cursed_fw`, or a link to a fork of an example under `examples/`.
+      render: javascript
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: The `cursed_fw` version, or the commit hash if you built from source.
+      placeholder: "1.0.5"
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and version, or Node version for build and packaging problems.
+      placeholder: "Chrome 141 / Node 22.11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: contract
+    attributes:
+      label: Affected contract
+      description: >
+        Optional. If a document in `docs/contracts/` states the behavior you relied on, link it and
+        quote the line. If no contract covers it, say so — that itself is useful.
