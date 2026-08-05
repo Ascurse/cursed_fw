@@ -48,7 +48,7 @@ A commit is healthy only when all applicable invariants pass:
 - successful package creation and installation in a consumer fixture;
 - expected tarball contents and zero unintended production dependencies;
 - no unexpected generated or stale tracked artifacts after verification;
-- valid Beads metadata and dependency graph for task changes;
+- valid Beads metadata and dependency graph in the local pre-PR evidence for task changes;
 - required browser acceptance scenarios once promoted to the PR lane.
 
 There is no weighted score. A package-consumer failure cannot be offset by higher coverage or a smaller bundle.
@@ -139,7 +139,7 @@ A flaky required test is an infrastructure defect. It is diagnosed and fixed or 
 
 `ci-pr` runs these jobs in parallel:
 
-- `metadata`: Beads validation, dependency-cycle detection, lockfile consistency, and forbidden artifact checks;
+- `metadata`: lockfile consistency and forbidden repository-artifact checks;
 - `quality`: lint and static architecture rules;
 - `tests`: unit, DOM integration, and public-contract tests;
 - `package`: production build, npm tarball inspection, and consumer smoke;
@@ -200,6 +200,8 @@ Every implementation-ready Beads issue includes:
 - dependencies and parent epic.
 
 This metadata defines scope before implementation and prevents agents from inventing proof after changing code.
+
+Beads state lives outside the Git checkout in the current project, so `bd lint` and `bd dep cycles` are mandatory local pre-PR evidence rather than GitHub Actions jobs. They move into CI only if the repository later adopts a versioned, checkout-visible task store.
 
 ### Execution loop
 
