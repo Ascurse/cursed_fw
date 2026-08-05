@@ -2,6 +2,13 @@
 
 Durable architectural rationale that cannot be reconstructed cheaply from the current code. Newest entries go first; each field stays within one to four sentences.
 
+## 2026-08-05 — Build tooling is judged by dependency surface, not by convenience
+
+**Context:** `rollup-plugin-filesize` printed a bundle-size report during the build. It pulled `pacote`, `tar`, and `sigstore` into the tree, and was the sole remaining source of 12 audit findings, 1 of them critical; the only fix npm offered was a major downgrade. It also wrote its report to stdout, which corrupted `npm pack --json` and forced a workaround in `scripts/check-package.mjs`.
+**Decision:** Remove the plugin rather than downgrade or accept the findings. A development tool must justify its transitive dependency surface against what it actually provides.
+**Why:** A cosmetic build report is not worth a package-fetching dependency chain, and a tool that pollutes stdout makes machine-readable build output unreliable.
+**Consequences:** `npm audit` reports zero findings and the package check performs a single `npm pack` with `prepack` live. Build plugins that write to stdout or add fetching, archiving, or signing dependencies need an explicit decision before adoption.
+
 ## 2026-08-05 — Browser ESM is the runtime contract; Node and npm are tooling defaults
 
 **Context:** A frontend runtime, its development host, package manager, and registry are different portability surfaces; binding them together would shrink compatibility without improving browser behavior.
