@@ -5,6 +5,8 @@ import { createApp, h } from '../index.js';
 
 const mountedParents = [];
 
+const INCREMENT_PAYLOAD = 2;
+
 function createParent() {
     const parent = document.createElement('div');
     document.body.append(parent);
@@ -20,7 +22,7 @@ function createCounterApp(initialCount = 0) {
         state: { count: initialCount },
         view: (state, emit) => h('button', {
             on: {
-                click: () => emit('increment', 2),
+                click: () => emit('increment', INCREMENT_PAYLOAD),
             },
         }, [String(state.count)]),
         reducers: {
@@ -47,11 +49,11 @@ test('renders the initial state when the application mounts', () => {
 
 test('re-renders with the next state when the view emits a command', () => {
     const parent = createParent();
-    createCounterApp().mount(parent);
+    createCounterApp(0).mount(parent);
 
     parent.querySelector('button').click();
 
-    expect(parent.textContent).toBe('2');
+    expect(parent.textContent).toBe(String(INCREMENT_PAYLOAD));
 });
 
 test('hands the reducer the previous state and the emitted payload', () => {
@@ -82,12 +84,12 @@ test('hands the reducer the previous state and the emitted payload', () => {
 test('keeps application instances isolated from each other', () => {
     const firstParent = createParent();
     const secondParent = createParent();
-    createCounterApp().mount(firstParent);
-    createCounterApp().mount(secondParent);
+    createCounterApp(0).mount(firstParent);
+    createCounterApp(0).mount(secondParent);
 
     firstParent.querySelector('button').click();
 
-    expect(firstParent.textContent).toBe('2');
+    expect(firstParent.textContent).toBe(String(INCREMENT_PAYLOAD));
     expect(secondParent.textContent).toBe('0');
 });
 
