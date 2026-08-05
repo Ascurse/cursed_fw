@@ -32,21 +32,14 @@ const NEUTRAL_ENVIRONMENT = Object.fromEntries(
     Object.entries(process.env).filter(([name]) => !name.toLowerCase().startsWith('npm_config_')),
 );
 
-function runVisibly(command, args, cwd) {
-    execFileSync(command, args, { cwd, stdio: ['ignore', 'inherit', 'inherit'] });
-}
-
 function packRuntime(destination) {
-    // prepack печатает отчёт сборки в stdout и ломает JSON, поэтому упаковка разделена:
-    // dry-run проверяет, что lifecycle-цепочка собирает пакет, второй запуск даёт чистый JSON
-    // уже собранного артефакта.
-    runVisibly('npm', ['pack', '--workspace', 'cursed_fw', '--dry-run'], repositoryRoot);
-
+    // Упаковка идёт с живым prepack: та же команда и собирает пакет, и отдаёт его состав.
+    // Держать stdout чистым обязаны сами плагины сборки — плагин, печатавший туда отчёт
+    // о размере бандла, из-за этого и был убран.
     const output = run('npm', [
         'pack',
         '--workspace', 'cursed_fw',
         '--json',
-        '--ignore-scripts',
         '--pack-destination', destination,
     ], repositoryRoot);
 
