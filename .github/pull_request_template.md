@@ -14,16 +14,12 @@ and regenerated `dist/` artifacts get a pull request sent back.
 ## Verification
 
 <!--
-Paste the actual commands you ran and their exit codes. There is no aggregate `npm run check` yet,
-so report each command separately. `npm run lint` is currently broken (ESLint 9 flat config
-migration is pending) — say "skipped, known broken" rather than silently omitting it.
+Paste the actual command you ran and its exit code.
 -->
 
 ```
 npm ci
-npm run test:run --workspace cursed_fw     # exit 0
-npm run build --workspace cursed_fw        # exit 0
-npm pack --workspace cursed_fw --dry-run   # exit 0
+npm run check   # exit 0
 ```
 
 <!--

@@ -4,6 +4,12 @@
   "main": "index.js",
   "scripts": {
     "doctor": "node --test scripts/doctor.test.mjs && node scripts/doctor.mjs",
+    "lint": "npm run lint --workspace cursed_fw",
+    "test:run": "npm run test:run --workspace cursed_fw",
+    "build": "npm run build --workspace cursed_fw",
+    "check:metadata": "node scripts/check-repository.mjs",
+    "check:package": "node --test scripts/package-contract.test.mjs && node scripts/check-package.mjs",
+    "check": "npm run doctor && npm run check:metadata && npm run lint && npm run test:run && npm run check:package",
     "serve:examples": "npx http-server -c-1  . -o ./examples/"
   },
   "packageManager": "npm@11.17.0",

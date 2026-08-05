@@ -35,18 +35,22 @@ recorded in a contract or in `docs/architecture.md` changes, update that documen
 
 ## Verifying
 
-There is no aggregate check command yet. Run each and report each exit code separately:
+Run the aggregate gate and report its exit code:
 
 ```bash
-npm run test:run --workspace cursed_fw
-npm run build --workspace cursed_fw
-npm pack --workspace cursed_fw --dry-run
+npm run check
 ```
 
-`npm run lint --workspace cursed_fw` currently fails for an unrelated reason: ESLint 9 no longer
-reads the `.eslintrc.js` format still present in `packages/runtime/`. The migration to
-`eslint.config.js` is tracked separately — do not work around it inside an unrelated change, and do
-not treat its failure as caused by your diff.
+For a faster loop while iterating, run the focused commands it aggregates:
+
+```bash
+npm run doctor
+npm run check:metadata
+npm run lint
+npm run test:run
+npm run build
+npm run check:package
+```
 
 A green test run is not proof of browser behavior. Changes to rendering, events, attributes, focus,
 or lifecycle need a real browser scenario against an example or a consumer fixture. A successful
