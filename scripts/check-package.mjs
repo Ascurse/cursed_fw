@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { assertPackageFiles, assertPublicExports } from './package-contract.mjs';
+import { assertPackageFiles, assertPublicExports, readPackedEntry } from './package-contract.mjs';
 
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
 
@@ -50,11 +50,11 @@ function packRuntime(destination) {
         '--pack-destination', destination,
     ], repositoryRoot);
 
-    const [packed] = JSON.parse(output);
+    const packed = readPackedEntry(output);
 
     return {
         tarball: join(destination, packed.filename),
-        files: packed.files.map(({ path }) => path),
+        files: packed.files,
     };
 }
 
