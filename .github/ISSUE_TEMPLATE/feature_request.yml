@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a change to what the framework does or exposes.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [docs/vision.md](../../docs/vision.md) first. It lists explicit non-goals; a proposal
+        that contradicts one needs to argue against the non-goal, not around it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: The concrete situation that is hard or impossible today. Not the solution yet.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What you want the framework to do, described as observable behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: >
+        What can be done today in user code instead, and why that is not good enough. A feature that
+        user code already handles cleanly usually does not belong in the runtime.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Public surface impact
+      description: See [docs/contracts/public-api.md](../../docs/contracts/public-api.md).
+      options:
+        - No change to public exports
+        - Adds a public export
+        - Changes existing public behavior (breaking)
+        - Not sure
+    validations:
+      required: true
