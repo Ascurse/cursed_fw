@@ -32,3 +32,8 @@ Thumbs.db
 
 # IDE-specific configurations (example for WebStorm)
 .idea/
+# Рабочие деревья beads
+.worktrees/
+
+# Локальный кеш индексатора
+.fastembed_cache/
