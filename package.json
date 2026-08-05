@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "doctor": "node --test scripts/doctor.test.mjs && node scripts/doctor.mjs",
     "serve:examples": "npx http-server -c-1  . -o ./examples/"
+  },
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": "24.19.0",
+    "npm": "11.17.0"
   },
   "keywords": [],
   "author": "Maximilian Shupyro <suomi7862535@gmail.com>",
