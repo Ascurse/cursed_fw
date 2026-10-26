@@ -9,7 +9,7 @@ const readRepositoryFile = (path) => readFileSync(new URL(path, repositoryRoot),
 
 test('accepts the pinned Node and npm versions', () => {
     assert.deepEqual(getRuntimeProblems({
-        nodeVersion: '24.19.0',
+        nodeVersion: '24.22.1',
         npmVersion: '11.17.0',
     }), []);
 });
@@ -19,14 +19,14 @@ test('reports both mismatches with recovery commands', () => {
         nodeVersion: '24.18.0',
         npmVersion: '12.0.0',
     }), [
-        'Node 24.18.0 is unsupported; run nvm use 24.19.0.',
+        'Node 24.18.0 is unsupported; run nvm use 24.22.1.',
         'npm 12.0.0 is unsupported; run corepack prepare npm@11.17.0 --activate.',
     ]);
 });
 
 test('reports only the mismatched runtime', () => {
     assert.deepEqual(getRuntimeProblems({
-        nodeVersion: '24.19.0',
+        nodeVersion: '24.22.1',
         npmVersion: '11.16.0',
     }), [
         'npm 11.16.0 is unsupported; run corepack prepare npm@11.17.0 --activate.',
@@ -35,10 +35,10 @@ test('reports only the mismatched runtime', () => {
 
 test('reports an undetectable npm instead of crashing', () => {
     assert.deepEqual(getRuntimeProblems({
-        nodeVersion: '24.19.0',
+        nodeVersion: '24.22.1',
         npmVersion: null,
     }), [
-        'npm was not found on PATH; run nvm use 24.19.0 to restore the bundled npm.',
+        'npm was not found on PATH; run nvm use 24.22.1 to restore the bundled npm.',
     ]);
 });
 
