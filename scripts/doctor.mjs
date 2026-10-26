@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import process from 'node:process';
 
-const EXPECTED_NODE_VERSION = '24.19.0';
+const EXPECTED_NODE_VERSION = '24.22.1';
 const EXPECTED_NPM_VERSION = '11.17.0';
 
 export function getRuntimeProblems({ nodeVersion, npmVersion }) {
